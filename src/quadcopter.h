@@ -63,7 +63,6 @@ void imu_init();
 void imu_update();
 int compute_pid(int, int);
 void imu_run();
-void get_imu_data(signed short*, signed short*, signed short*, signed short*, signed short*, signed short*);
 
 void xbee_init();
 void xbee_run();
@@ -123,4 +122,5 @@ typedef struct
   Gyro g;
   Accel a;
   int pitch;
+  int roll;
 } IMU;

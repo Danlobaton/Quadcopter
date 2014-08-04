@@ -63,27 +63,30 @@ void imu_update()
   
   imu.a.roll = atan2(-imu.a.y.filter, imu.a.z.filter);
   imu.a.pitch = atan2(imu.a.x.filter, sqrt(imu.a.y.filter*imu.a.y.filter + imu.a.z.filter*imu.a.z.filter));
-  
-  imu.pitch = 0.98*(imu.pitch + imu.g.x.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.pitch;
+
+  imu.pitch = 0.98*(imu.pitch + imu.g.z.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.pitch;
+  imu.roll = 0.98*(imu.roll + imu.g.x.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.roll;
 
   lock = 0;
 }
 
 double errSum = 0;
 double lastErr = 0;
+double lastInput;
 double kp = 1;
 double ki = 1;
 double kd = 1;
-int compute_pid(int actualVal, int expectedVal)
+int compute_pid(int input, int setpoint) // Input, Setpoint
 {
   double time = 10;
   
-  double error = expectedVal - actualVal;
+  double error = setpoint - input;
   errSum += (error * time);
-  double dErr = (error - lastErr) / time;
+  double dIn = input - lastInput;
   
-  int output = kp * error + ki * errSum + kd * dErr;
+  int output = kp*error + ki*errSum - kd*dIn;
   
+  lastInput = input;
   lastErr = error;
 
   return output;
