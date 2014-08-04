@@ -1,4 +1,5 @@
-mkdir cmm
+@echo off
+mkdir cmm > nul 2>&1
 call propeller-elf-gcc.exe -I . -L . -I lib/Protocol/libsimplei2c -L lib/Protocol/libsimplei2c/cmm/ -I lib/Utility/libsimpletools -L lib/Utility/libsimpletools/cmm/ -I lib/TextDevices/libsimpletext -L lib/TextDevices/libsimpletext/cmm/ -Os -mcmm -m32bit-doubles -fno-exceptions -std=c99 -c imu.c -o cmm/imu.o
 call propeller-elf-gcc.exe -I . -L . -I lib/Protocol/libsimplei2c -L lib/Protocol/libsimplei2c/cmm/ -I lib/Utility/libsimpletools -L lib/Utility/libsimpletools/cmm/ -I lib/TextDevices/libsimpletext -L lib/TextDevices/libsimpletext/cmm/ -Os -mcmm -m32bit-doubles -fno-exceptions -std=c99 -c i2chelper.c -o cmm/i2chelper.o
 call propeller-elf-gcc.exe -I . -L . -I lib/Protocol/libsimplei2c -L lib/Protocol/libsimplei2c/cmm/ -I lib/Utility/libsimpletools -L lib/Utility/libsimpletools/cmm/ -I lib/TextDevices/libsimpletext -L lib/TextDevices/libsimpletext/cmm/ -Os -mcmm -m32bit-doubles -fno-exceptions -std=c99 -c xbee.c -o cmm/xbee.o
@@ -6,4 +7,4 @@ call propeller-elf-gcc.exe -I . -L . -I lib/Protocol/libsimplei2c -L lib/Protoco
 call propeller-elf-gcc.exe -I . -L . -I lib/Protocol/libsimplei2c -L lib/Protocol/libsimplei2c/cmm/ -I lib/Utility/libsimpletools -L lib/Utility/libsimpletools/cmm/ -I lib/TextDevices/libsimpletext -L lib/TextDevices/libsimpletext/cmm/ -Os -mcmm -m32bit-doubles -fno-exceptions -std=c99 -c range.c -o cmm/range.o
 call propeller-elf-gcc.exe -I . -L . -I lib/Protocol/libsimplei2c -L lib/Protocol/libsimplei2c/cmm/ -I lib/Utility/libsimpletools -L lib/Utility/libsimpletools/cmm/ -I lib/TextDevices/libsimpletext -L lib/TextDevices/libsimpletext/cmm/ -o cmm/quadcopter.elf -Os -mcmm -m32bit-doubles -fno-exceptions -std=c99 cmm/imu.o cmm/i2chelper.o cmm/xbee.o cmm/motor.o cmm/range.o quadcopter.c -lm -lsimplei2c -lm -lsimplei2c -lsimpletools -lsimpletext -lm -lsimplei2c -lm -lsimplei2c -lsimpletools -lm -lsimplei2c -lm -lsimplei2c -lm -lsimplei2c -lm -lm -lsimplei2c -lm
 call propeller-load -s cmm/quadcopter.elf
-call propeller-elf-objdump -h cmm/quadcopter.elf
+call propeller-elf-objdump -h cmm/quadcopter.elf > nul
