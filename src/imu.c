@@ -57,37 +57,33 @@ void imu_update()
   imu.a.y.raw = (signed short) read_value(&imuConn, ACCL_ADDR, ACCL_REG_Y, 1);
   imu.a.z.raw = (signed short) read_value(&imuConn, ACCL_ADDR, ACCL_REG_Z, 1);
 
-  imu.a.x.filter = imu.a.x.raw*GYRO_FILTER_ALPHA + imu.a.x.filter*(1-GYRO_FILTER_ALPHA);
-  imu.a.y.filter = imu.a.y.raw*GYRO_FILTER_ALPHA + imu.a.y.filter*(1-GYRO_FILTER_ALPHA);
-  imu.a.z.filter = imu.a.z.raw*GYRO_FILTER_ALPHA + imu.a.z.filter*(1-GYRO_FILTER_ALPHA);
+  imu.a.x.filter = imu.a.x.raw*ACCEL_FILTER_ALPHA + imu.a.x.filter*(1-ACCEL_FILTER_ALPHA);
+  imu.a.y.filter = imu.a.y.raw*ACCEL_FILTER_ALPHA + imu.a.y.filter*(1-ACCEL_FILTER_ALPHA);
+  imu.a.z.filter = imu.a.z.raw*ACCEL_FILTER_ALPHA + imu.a.z.filter*(1-ACCEL_FILTER_ALPHA);
   
   imu.a.roll = atan2(-imu.a.y.filter, imu.a.z.filter);
   imu.a.pitch = atan2(imu.a.x.filter, sqrt(imu.a.y.filter*imu.a.y.filter + imu.a.z.filter*imu.a.z.filter));
 
-  imu.pitch = 0.98*(imu.pitch + imu.g.z.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.pitch;
-  imu.roll = 0.98*(imu.roll + imu.g.x.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.roll;
+  imu.pitch.input = 0.98*(imu.pitch.input + imu.g.z.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.pitch;
+  imu.roll.input = 0.98*(imu.roll.input + imu.g.x.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.roll;
 
   lock = 0;
 }
 
-double errSum = 0;
-double lastErr = 0;
-double lastInput;
-double kp = 1;
-double ki = 1;
-double kd = 1;
-int compute_pid(int input, int setpoint) // Input, Setpoint
+void compute_pid(Axis* axis, int setpoint)
 {
-  double time = 10;
-  
-  double error = setpoint - input;
-  errSum += (error * time);
-  double dIn = input - lastInput;
-  
-  int output = kp*error + ki*errSum - kd*dIn;
-  
-  lastInput = input;
-  lastErr = error;
+  double error = setpoint - axis->input;
 
-  return output;
+  axis->errSum += error*IMU_UPDATE_DELAY;
+  if (axis->errSum > MOTOR_HIGH) axis->errSum = MOTOR_HIGH;
+  else if (axis->errSum < MOTOR_LOW) axis->errSum = MOTOR_LOW;
+
+  double dIn = axis->input - axis->lastInput;
+
+  axis->output = axis->kp*error + axis->ki*axis->errSum - axis->kd*dIn;
+  if (axis->output > MOTOR_HIGH) axis->output = MOTOR_HIGH;
+  else if (axis->output < MOTOR_LOW) axis->output = MOTOR_LOW;
+  
+  axis->lastInput = axis->input;
+  axis->lastErr = error;
 }

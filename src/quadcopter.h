@@ -22,8 +22,7 @@
 #define ACCL_REG_Z 0x36
 
 #define IMU_UPDATE_DELAY 100 // Time between updates (in ms)
-#define GYRO_FILTER_ALPHA 0.5 // Alpha value of low pass filter
-#define ACCEL_FILTER_ALPHA 0.5
+#define ACCEL_FILTER_ALPHA 0.5 // Alpha value of low pass filter
 
 #define XBEE_BAUD_RATE 9600
 
@@ -53,36 +52,6 @@
 
 volatile unsigned int lastCommand;
 volatile unsigned int range;
-
-unsigned short read_from_register(i2c*, int, int);
-void write_to_register(i2c*, int, int, int);
-unsigned short read_value(i2c*, int, int, int);
-unsigned short combine(char, char);
-
-void imu_init();
-void imu_update();
-int compute_pid(int, int);
-void imu_run();
-
-void xbee_init();
-void xbee_run();
-unsigned int xbee_get_byte();
-void xbee_send_byte(unsigned int);
-
-void motor_init();
-void motor_run();
-
-void ultrasonic_run();
-
-int clamp(int, int, int);
-
-typedef struct
-{
-  int raw;
-  int errSum;
-  int lastErr;
-  int output;
-} PID;
 
 typedef struct
 {
@@ -119,8 +88,42 @@ typedef struct
 
 typedef struct
 {
+  int input;
+  int lastInput;
+  int errSum;
+  int lastErr;
+  int output;
+  double kp;
+  double ki;
+  double kd;
+} Axis;
+
+typedef struct
+{
   Gyro g;
   Accel a;
-  int pitch;
-  int roll;
+  Axis pitch;
+  Axis roll;
 } IMU;
+
+unsigned short read_from_register(i2c*, int, int);
+void write_to_register(i2c*, int, int, int);
+unsigned short read_value(i2c*, int, int, int);
+unsigned short combine(char, char);
+
+void imu_init();
+void imu_update();
+void compute_pid(Axis*, int);
+void imu_run();
+
+void xbee_init();
+void xbee_run();
+unsigned int xbee_get_byte();
+void xbee_send_byte(unsigned int);
+
+void motor_init();
+void motor_run();
+
+void ultrasonic_run();
+
+int clamp(int, int, int);
