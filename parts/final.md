@@ -13,10 +13,10 @@ On Quadcopter
 | Battery | [11V 2600mAh 30C](http://www.headsuphobby.com/111v-2600mah-30C-DBY-Power-Lipo-Battery-F-232.htm) | $27 | 201g |
 | | [Battery Tester/Alarm](http://www.amazon.com/Battery-Tester-Voltage-Buzzer-Alarm/dp/B005GJCJOA) | $3 |  0g |
 | Speed Controller | [Turnigy Multistar 20A 2-4S](http://www.hobbyking.com/hobbyking/store/__25364__Turnigy_Multistar_20_Amp_Multi_rotor_Brushless_ESC_2_4S.html) | $10 x 4 | 25g x 4 |
-| Range Finder | [XL-Maxsonar EZ0](https://www.sparkfun.com/products/9491) | $50 | 0g |
+| Range Finder | [HS-SR04](http://www.amazon.com/SainSmart-HC-SR04-Ranging-Detector-Distance/dp/B004U8TOE6) | $12 | 8g |
 | Transmitter | [XBee 1mW Wire Antenna](https://www.sparkfun.com/products/8665) | $23 | 5g |
 | | [XBee Explorer Regulated](https://www.sparkfun.com/products/11373) | $10 | 5g |
-| Total | | $253 | 665g |
+| Total | | $215 | 673g |
 
 ---
 Not on Quadcopter
@@ -29,4 +29,4 @@ Not on Quadcopter
 
 ---
 
-Total: $321
+Total: $283
