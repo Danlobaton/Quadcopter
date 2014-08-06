@@ -6,15 +6,14 @@ i2c imuConn;
 volatile IMU imu;
 
 volatile int lock;
-unsigned long last;
 
 void imu_run()
 {
   while(1)
   {
-    last = CNT;
-    waitcnt(CNT + CLKFREQ/1000*IMU_UPDATE_DELAY);
+    unsigned long last = CNT;
     imu_update();
+    waitcnt(last + CLKFREQ/1000*IMU_UPDATE_DELAY);
   }
 }
 
@@ -39,9 +38,6 @@ void imu_init()
   write_to_register(&imuConn, ACCL_ADDR, 0x2D, 16);
   write_to_register(&imuConn, ACCL_ADDR, 0x2D, 8);
   write_to_register(&imuConn, ACCL_ADDR, 0x31, 0); // Might need to change this later.
-  //writeToRegister(&imuConn, ACCL_ADDR, 0x1E, -25/-4); -25 // Tuning values.
-  //writeToRegister(&imuConn, ACCL_ADDR, 0x1F, 12/-4);   12
-  //writeToRegister(&imuConn, ACCL_ADDR, 0x20, 249/4);  249
 }
 
 void imu_update()
@@ -60,17 +56,20 @@ void imu_update()
   imu.a.x.filter = imu.a.x.raw*ACCEL_FILTER_ALPHA + imu.a.x.filter*(1-ACCEL_FILTER_ALPHA);
   imu.a.y.filter = imu.a.y.raw*ACCEL_FILTER_ALPHA + imu.a.y.filter*(1-ACCEL_FILTER_ALPHA);
   imu.a.z.filter = imu.a.z.raw*ACCEL_FILTER_ALPHA + imu.a.z.filter*(1-ACCEL_FILTER_ALPHA);
-  
+
   imu.a.roll = atan2(-imu.a.y.filter, imu.a.z.filter);
   imu.a.pitch = atan2(imu.a.x.filter, sqrt(imu.a.y.filter*imu.a.y.filter + imu.a.z.filter*imu.a.z.filter));
 
   imu.pitch.input = 0.98*(imu.pitch.input + imu.g.z.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.pitch;
   imu.roll.input = 0.98*(imu.roll.input + imu.g.x.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.roll;
 
+  compute_pid(&imu.pitch, 0);
+  compute_pid(&imu.roll, 0);
+
   lock = 0;
 }
 
-void compute_pid(Axis* axis, int setpoint)
+void compute_pid(volatile Axis* axis, int setpoint)
 {
   double error = setpoint - axis->input;
 

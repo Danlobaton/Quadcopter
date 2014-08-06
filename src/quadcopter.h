@@ -93,6 +93,7 @@ typedef struct
   int errSum;
   int lastErr;
   int output;
+  int setpoint;
   double kp;
   double ki;
   double kd;
@@ -113,7 +114,7 @@ unsigned short combine(char, char);
 
 void imu_init();
 void imu_update();
-void compute_pid(Axis*, int);
+void compute_pid(volatile Axis*, int);
 void imu_run();
 
 void xbee_init();
