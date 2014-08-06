@@ -1,12 +1,13 @@
 #include "quadcopter.h"
 #include "simpletools.h"
 
-#define SWAP(x,y) if (newMotors[y]->current_val < newMotors[x]->current_val) \
-                  {                                                          \
-                    volatile Motor* tmp = newMotors[x];                      \
-                    newMotors[x] = newMotors[y];                             \
-                    newMotors[y] = tmp;                                      \
-                  }
+#define SWAP(x,y) \
+    if (newMotors[y]->current_val < newMotors[x]->current_val) \
+    {                                                          \
+      volatile Motor* tmp = newMotors[x];                      \
+      newMotors[x] = newMotors[y];                             \
+      newMotors[y] = tmp;                                      \
+    }
 #define PWM_CYCLE 20000
 
 void quad_wakeup();
@@ -17,10 +18,10 @@ void quad_hover();
 
 void pwm_run();
 
-volatile Motor fr = { .pin = PIN_MOTOR_FR, .current_val = 1000 };
-volatile Motor fl = { .pin = PIN_MOTOR_FL, .current_val = 1000 };
-volatile Motor br = { .pin = PIN_MOTOR_BR, .current_val = 1000 };
-volatile Motor bl = { .pin = PIN_MOTOR_BL, .current_val = 1000 };
+volatile Motor fr = { .pin = PIN_MOTOR_FR, .current_val = 0 };
+volatile Motor fl = { .pin = PIN_MOTOR_FL, .current_val = 0 };
+volatile Motor br = { .pin = PIN_MOTOR_BR, .current_val = 0 };
+volatile Motor bl = { .pin = PIN_MOTOR_BL, .current_val = 0 };
 
 volatile Motor* motors[4];
 volatile Motor* newMotors[4];
@@ -85,7 +86,6 @@ void pwm_run()
   while(1)
   {
     int startTmp = CNT;
-    int cnt = 0;
     memcpy(&newMotors, &motors, sizeof(motors));
 
     // Sort.
