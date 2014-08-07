@@ -39,17 +39,13 @@ void motor_run()
   cog_run(&pwm_run, 3);
   while(1)
   {
-    int signal = lastCommand;
-    if (signal == COMMAND_WAKEUP)
-      quad_wakeup();
-    else if (signal == COMMAND_TAKEOFF)
-      quad_takeoff();
-    else if (signal == COMMAND_LAND)
-      quad_land();
-    else if (signal == COMMAND_SHUTDOWN)
-      quad_shutdown();
-    else if (signal == COMMAND_HOVER)
-      quad_hover();
+    quad_wakeup();
+    waitcnt(CNT + CLKFREQ);
+    quad_takeoff();
+    waitcnt(CNT + CLKFREQ/2);
+    quad_land();
+    waitcnt(CNT + CLKFREQ/2);
+    quad_shutdown();
   }
 }
 
@@ -61,13 +57,13 @@ void quad_hover()
 void quad_land()
 {
   for (int i=0;i<4;i++)
-    motors[i]->current_val = MOTOR_HOVER - 5*clamp(0, 100-range, 100);
+    motors[i]->current_val = MOTOR_HOVER - 50;
 }
 
 void quad_takeoff()
 {
   for (int i=0;i<4;i++)
-    motors[i]->current_val = MOTOR_HOVER + 5*clamp(0, 100-range, 100);
+    motors[i]->current_val = MOTOR_HOVER + 50;
 }
 
 void quad_wakeup()
