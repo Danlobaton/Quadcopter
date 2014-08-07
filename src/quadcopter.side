@@ -15,4 +15,4 @@ range.c
 >defs::-std=c99
 >-lm
 >linker::-lsimplei2c
->BOARD::ACTIVITYBOARD
+>BOARD::GENERIC

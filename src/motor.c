@@ -36,6 +36,7 @@ void motor_init()
 
 void motor_run()
 {
+  cog_run(&pwm_run, 3);
   while(1)
   {
     int signal = lastCommand;
