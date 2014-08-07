@@ -9,7 +9,9 @@ void xbee_init()
 void xbee_run()
 {
   while(1)
+  {
     lastCommand = xbee_get_byte();
+  }
 }
 
 unsigned int xbee_get_byte()

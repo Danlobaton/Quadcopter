@@ -1,13 +1,13 @@
 #include "simpletools.h"
 
-#define PIN_IMU_SDA    0
-#define PIN_IMU_SCL    1
+#define PIN_IMU_SDA    12
+#define PIN_IMU_SCL    11
 #define PIN_MOTOR_FR   4
 #define PIN_MOTOR_FL   5
 #define PIN_MOTOR_BR   6
 #define PIN_MOTOR_BL   7
-#define PIN_XBEE_IN    30
-#define PIN_XBEE_OUT   29
+#define PIN_XBEE_IN    15 // DOUT
+#define PIN_XBEE_OUT   14 // DIN
 #define PIN_RANGE_TRIG 7
 #define PIN_RANGE_ECHO 8
 

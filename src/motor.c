@@ -36,7 +36,7 @@ void motor_init()
 
 void motor_run()
 {
-  cog_run(&pwm_run, 3);
+  cog_run(&pwm_run, 100);
   while(1)
   {
     quad_wakeup();

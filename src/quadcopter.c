@@ -3,13 +3,15 @@
 
 int main()
 {
-  simpleterm_close();
+  waitcnt(CNT + CLKFREQ);
+  print("INFO: Starting\n");
   
   xbee_init();
-  imu_init();
   motor_init();
+  //imu_init();
 
-  cog_run(&motor_run, 0);
-  cog_run(&ultrasonic_run, 1);
-  cog_run(&imu_run, 2);
+  cog_run(&xbee_run, 10);
+  cog_run(&motor_run, 100);
+  //cog_run(&ultrasonic_run, 1);
+  //imu_run();
 }

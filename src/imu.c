@@ -9,10 +9,15 @@ volatile int lock;
 
 void imu_run()
 {
+  simpleterm_open();
+  waitcnt(CNT + CLKFREQ);
+
+  print("INFO: Starting IMU process.\n");
   while(1)
   {
     unsigned long last = CNT;
     imu_update();
+    printf("%5d %5d\n", imu.a.pitch, imu.a.roll);
     waitcnt(last + CLKFREQ/1000*IMU_UPDATE_DELAY);
   }
 }
@@ -20,6 +25,8 @@ void imu_run()
 void imu_init()
 {
   lock = 0;
+
+  print("INFO: Opening I2C connection.\n");
   i2c_open(&imuConn, PIN_IMU_SCL, PIN_IMU_SDA, 0);
 
   // Gyro initialization.
@@ -38,6 +45,7 @@ void imu_init()
   write_to_register(&imuConn, ACCL_ADDR, 0x2D, 16);
   write_to_register(&imuConn, ACCL_ADDR, 0x2D, 8);
   write_to_register(&imuConn, ACCL_ADDR, 0x31, 0); // Might need to change this later.
+  print("INFO: Initialized I2C device.\n");
 }
 
 void imu_update()
