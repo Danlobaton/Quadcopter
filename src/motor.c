@@ -1,5 +1,6 @@
 #include "quadcopter.h"
 #include "simpletools.h"
+#include "servo.h"
 
 #define SWAP(x,y) \
     if (newMotors[y]->current_val < newMotors[x]->current_val) \
@@ -17,6 +18,7 @@ void quad_shutdown();
 void quad_hover();
 
 void pwm_run();
+void pwm_rune();
 
 volatile Motor fr = { .pin = PIN_MOTOR_FR, .current_val = 0 };
 volatile Motor fl = { .pin = PIN_MOTOR_FL, .current_val = 0 };
@@ -36,14 +38,13 @@ void motor_init()
 
 void motor_run()
 {
-  cog_run(&pwm_run, 100);
-  quad_wakeup();
+  pwm_start(20000);
+  pwm_set(PIN_MOTOR_BL, 0, 1000);
   waitcnt(CNT + CLKFREQ);
-  quad_takeoff();
-  waitcnt(CNT + CLKFREQ/2);
-  quad_land();
-  waitcnt(CNT + CLKFREQ/2);
-  quad_shutdown();
+  while (1)
+  {
+    pwm_set(PIN_MOTOR_BL, 0, 1500);
+  }
 }
 
 void quad_hover()
@@ -75,30 +76,29 @@ void quad_shutdown()
     motors[i]->current_val = 1000;
 }
 
+void pwm_rune()
+{
+  servo_start();
+  while(1)
+  {
+    for (int i=0;i<4;i++)
+      servo_set(motors[i]->pin, motors[i]->current_val);
+  }
+}
+
 void pwm_run()
 {
   while(1)
   {
-    int startTmp = CNT;
-    memcpy(&newMotors, &motors, sizeof(motors));
-
-    // Sort.
-    SWAP(0, 1);
-    SWAP(2, 3);
-    SWAP(0, 2);
-    SWAP(1, 3);
-    SWAP(1, 2);
-
-    int tmp = CNT;
+    unsigned long startTmp = CNT;
 
     for (int i=0;i<4;i++)
-      high(newMotors[i]->pin);
+      high(motors[i]->pin);
+
+    waitcnt(CNT + CLKFREQ/1000000*(motors[0]->current_val));
 
     for (int i=0;i<4;i++)
-    {
-      waitcnt(tmp + CLKFREQ/1000000*(newMotors[i]->current_val));
-      low(newMotors[i]->pin);
-    }
+      low(motors[i]->pin);
 
     waitcnt(startTmp + CLKFREQ/50);
   }
