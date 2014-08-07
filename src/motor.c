@@ -37,16 +37,13 @@ void motor_init()
 void motor_run()
 {
   cog_run(&pwm_run, 100);
-  while(1)
-  {
-    quad_wakeup();
-    waitcnt(CNT + CLKFREQ);
-    quad_takeoff();
-    waitcnt(CNT + CLKFREQ/2);
-    quad_land();
-    waitcnt(CNT + CLKFREQ/2);
-    quad_shutdown();
-  }
+  quad_wakeup();
+  waitcnt(CNT + CLKFREQ);
+  quad_takeoff();
+  waitcnt(CNT + CLKFREQ/2);
+  quad_land();
+  waitcnt(CNT + CLKFREQ/2);
+  quad_shutdown();
 }
 
 void quad_hover()
