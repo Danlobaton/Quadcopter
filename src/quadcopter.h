@@ -1,7 +1,7 @@
 #include "simpletools.h"
 
-#define PIN_IMU_SDA    12
-#define PIN_IMU_SCL    11
+#define PIN_IMU_SDA    16
+#define PIN_IMU_SCL    15
 #define PIN_MOTOR_FR   9
 #define PIN_MOTOR_FL   10
 #define PIN_MOTOR_BR   8
@@ -22,7 +22,7 @@
 #define ACCL_REG_Z 0x36
 
 #define IMU_UPDATE_DELAY 100 // Time between updates (in ms)
-#define ACCEL_FILTER_ALPHA 0.5 // Alpha value of low pass filter
+#define ACCEL_FILTER_ALPHA 0.5d // Alpha value of low pass filter
 
 #define XBEE_BAUD_RATE 9600
 
@@ -61,8 +61,8 @@ typedef struct
 
 typedef struct
 {
-  int raw;
-  int filter;
+  signed short raw;
+  double filter;
 } AccelRaw;
 
 typedef struct
@@ -70,13 +70,13 @@ typedef struct
   AccelRaw x;
   AccelRaw y;
   AccelRaw z;
-  int pitch;
-  int roll;
+  double pitch;
+  double roll;
 } Accel;
 
 typedef struct
 {
-  int raw;
+  unsigned short raw;
 } GyroRaw;
 
 typedef struct
@@ -88,12 +88,12 @@ typedef struct
 
 typedef struct
 {
-  int input;
-  int lastInput;
-  int errSum;
-  int lastErr;
-  int output;
-  int setpoint;
+  double input;
+  double lastInput;
+  double errSum;
+  double lastErr;
+  double output;
+  double setpoint;
   double kp;
   double ki;
   double kd;

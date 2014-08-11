@@ -12,12 +12,11 @@ void imu_run()
   simpleterm_open();
   waitcnt(CNT + CLKFREQ);
 
-  print("INFO: Starting IMU process.\n");
   while(1)
   {
     unsigned long last = CNT;
     imu_update();
-    printf("%5d %5d\n", imu.a.pitch, imu.a.roll);
+    printf("%4.2f\t%5d\n", imu.a.x.filter, imu.a.x.raw);
     waitcnt(last + CLKFREQ/1000*IMU_UPDATE_DELAY);
   }
 }
@@ -51,9 +50,9 @@ void imu_update()
   while(lock==1);
   lock = 1;
 
-  imu.g.x.raw = (signed short) read_value(&imuConn, GYRO_ADDR, GYRO_REG_X, 0);
-  imu.g.y.raw = (signed short) read_value(&imuConn, GYRO_ADDR, GYRO_REG_Y, 0);
-  imu.g.z.raw = (signed short) read_value(&imuConn, GYRO_ADDR, GYRO_REG_Z, 0);
+  imu.g.x.raw = (unsigned short) read_value(&imuConn, GYRO_ADDR, GYRO_REG_X, 0);
+  imu.g.y.raw = (unsigned short) read_value(&imuConn, GYRO_ADDR, GYRO_REG_Y, 0);
+  imu.g.z.raw = (unsigned short) read_value(&imuConn, GYRO_ADDR, GYRO_REG_Z, 0);
 
   imu.a.x.raw = (signed short) read_value(&imuConn, ACCL_ADDR, ACCL_REG_X, 1);
   imu.a.y.raw = (signed short) read_value(&imuConn, ACCL_ADDR, ACCL_REG_Y, 1);
@@ -69,8 +68,8 @@ void imu_update()
   imu.pitch.input = 0.98*(imu.pitch.input + imu.g.z.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.pitch;
   imu.roll.input = 0.98*(imu.roll.input + imu.g.x.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.roll;
 
-  compute_pid(&imu.pitch, 0);
-  compute_pid(&imu.roll, 0);
+  //compute_pid(&imu.pitch, 0);
+  //compute_pid(&imu.roll, 0);
 
   lock = 0;
 }
