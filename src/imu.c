@@ -16,7 +16,7 @@ void imu_run()
   {
     unsigned long last = CNT;
     imu_update();
-    printf("%4.2f\t%5d\n", imu.a.x.filter, imu.a.x.raw);
+    printf("%4.2f\t%4.2f\n", imu.a.pitch, imu.a.roll);
     waitcnt(last + CLKFREQ/1000*IMU_UPDATE_DELAY);
   }
 }
