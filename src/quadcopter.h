@@ -76,7 +76,9 @@ typedef struct
 
 typedef struct
 {
-  unsigned short raw;
+  signed short raw;
+  signed short offset;
+  double filter;
 } GyroRaw;
 
 typedef struct
