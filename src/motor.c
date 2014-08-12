@@ -11,11 +11,8 @@
     }
 #define PWM_CYCLE 20000
 
-void quad_wakeup();
-void quad_takeoff();
-void quad_land();
-void quad_shutdown();
-void quad_hover();
+void quad_power(int, int);
+void quad_power(int);
 
 void pwm_run();
 
@@ -36,10 +33,12 @@ void motor_init()
 
 void motor_run()
 {
-  pwm_start(20000);
-  pwm_set(PIN_MOTOR_BL, 0, 1000);
-  waitcnt(CNT + CLKFREQ);
-  pwm_set(PIN_MOTOR_BL, 0, 1500);
+  cog_run(&pwm_run, 100);
+  quad_power(1000, 10000);
+  quad_power(1100, 2000);
+  quad_power(1200, 3000);
+  quad_power(1100, 2000);
+  quad_power(1000, 1000);
 }
 
 void pwm_run()
@@ -52,37 +51,15 @@ void pwm_run()
       servo_set(motors[i]->pin, motors[i]->current_val);
   }
 }
-  
-void quad_hover()
-{
-  
+
+void quad_power(int power, int time) {
+  int tmp = CNT;
+  quad_power(power);
+  waitcnt(tmp + CLKFREQ*time/1000)
 }
 
-void quad_land()
+void quad_power(int power)
 {
   for (int i=0;i<4;i++)
-    motors[i]->current_val = MOTOR_HOVER - 50;
-}
-
-void quad_takeoff()
-{
-  for (int i=0;i<4;i++)
-    motors[i]->current_val = MOTOR_HOVER + 50;
-}
-
-void quad_wakeup()
-{
-  for (int i=0;i<4;i++)
-    motors[i]->current_val = 1000;
-}
-
-void quad_shutdown()
-{
-  for (int i=0;i<4;i++)
-    motors[i]->current_val = 1000;
-}
-
-int clamp(int l, int n, int h)
-{
-  return n<l?l:(n>h?h:n);
+    motors[i]->current_val = power;
 }

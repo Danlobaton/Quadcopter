@@ -3,12 +3,12 @@
 
 int main()
 {
-  //motor_init();
+  motor_init();
   //xbee_init();
-  imu_init();
+  //imu_init();
 
-  //motor_run();
+  motor_run();
   //cog_run(&xbee_run, 10);
   //cog_run(&ultrasonic_run, 1);
-  imu_run();
+  //imu_run();
 }
