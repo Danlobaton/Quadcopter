@@ -49,13 +49,13 @@ void imu_update()
   while(lock==1);
   lock = 1;
 
-  imu.g.x.raw = (signed short) read_value(&imuConn, GYRO_ADDR, GYRO_REG_X, 0) - imu.g.x.offset;
-  imu.g.y.raw = (signed short) read_value(&imuConn, GYRO_ADDR, GYRO_REG_Y, 0) - imu.g.x.offset;
-  imu.g.z.raw = (signed short) read_value(&imuConn, GYRO_ADDR, GYRO_REG_Z, 0) - imu.g.x.offset;
+  imu.g.x.raw = (signed short) read_value(&imuConn, GYRO_ADDR, GYRO_REG_X, 0)/(2000*IMU_UPDATE_DELAY) - imu.g.x.offset;
+  imu.g.y.raw = (signed short) read_value(&imuConn, GYRO_ADDR, GYRO_REG_Y, 0)/(2000*IMU_UPDATE_DELAY) - imu.g.x.offset;
+  imu.g.z.raw = (signed short) read_value(&imuConn, GYRO_ADDR, GYRO_REG_Z, 0)/(2000*IMU_UPDATE_DELAY) - imu.g.x.offset;
 
-  imu.a.x.raw = (signed short) read_value(&imuConn, ACCL_ADDR, ACCL_REG_X, 1);
-  imu.a.y.raw = (signed short) read_value(&imuConn, ACCL_ADDR, ACCL_REG_Y, 1);
-  imu.a.z.raw = (signed short) read_value(&imuConn, ACCL_ADDR, ACCL_REG_Z, 1);
+  imu.a.x.raw = (signed short) read_value(&imuConn, ACCL_ADDR, ACCL_REG_X, 1)/4;
+  imu.a.y.raw = (signed short) read_value(&imuConn, ACCL_ADDR, ACCL_REG_Y, 1)/4;
+  imu.a.z.raw = (signed short) read_value(&imuConn, ACCL_ADDR, ACCL_REG_Z, 1)/4;
 
   if (first)
   {
