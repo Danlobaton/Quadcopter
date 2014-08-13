@@ -11,40 +11,49 @@
     }
 #define PWM_CYCLE 20000
 
-void quad_power(int, int);
+void quad_time(int, int);
 void quad_power(int);
 
 void pwm_run();
 
-volatile Motor fr = { .pin = PIN_MOTOR_FR, .current_val = 0 };
-volatile Motor fl = { .pin = PIN_MOTOR_FL, .current_val = 0 };
-volatile Motor br = { .pin = PIN_MOTOR_BR, .current_val = 0 };
-volatile Motor bl = { .pin = PIN_MOTOR_BL, .current_val = 0 };
+volatile Motor f = { .pin = PIN_MOTOR_F, .current_val = 0 };
+volatile Motor b = { .pin = PIN_MOTOR_B, .current_val = 0 };
+volatile Motor l = { .pin = PIN_MOTOR_L, .current_val = 0 };
+volatile Motor r = { .pin = PIN_MOTOR_R, .current_val = 0 };
 
 volatile Motor* motors[4];
 
 void motor_init()
 {
-  motors[0] = &fr;
-  motors[1] = &fl;
-  motors[2] = &br;
-  motors[3] = &bl;
+  motors[0] = &f;
+  motors[1] = &b;
+  motors[2] = &l;
+  motors[3] = &r;
+  imu.pitch.inc = &f;
+  imu.pitch.dec = &b;
+  imu.roll.inc = &r;
+  imu.roll.dec = &l;
 }
 
 void motor_run()
 {
+  simpleterm_open();
+  waitcnt(CNT + CLKFREQ);
+  print("Starting.\n");
   cog_run(&pwm_run, 100);
-  quad_power(1000, 10000);
-  quad_power(1100, 2000);
-  quad_power(1200, 3000);
-  quad_power(1100, 2000);
-  quad_power(1000, 1000);
+  print("Wakeup.\n");
+  quad_time(1000, 10);
+  print("Power.\n");
+  quad_time(1100, 2);
+  quad_time(1200, 3);
+  quad_time(1100, 2);
+  quad_time(1000, 1);
 }
 
 void pwm_run()
 {
   servo_start();
-  quad_wakeup();
+  waitcnt(CNT + CLKFREQ/2);
   while(1)
   {
     for (int i=0;i<4;i++)
@@ -52,10 +61,10 @@ void pwm_run()
   }
 }
 
-void quad_power(int power, int time) {
+void quad_time(int power, int time) {
   int tmp = CNT;
   quad_power(power);
-  waitcnt(tmp + CLKFREQ*time/1000)
+  waitcnt(tmp + CLKFREQ*time);
 }
 
 void quad_power(int power)

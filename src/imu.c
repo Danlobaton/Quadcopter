@@ -3,7 +3,6 @@
 
 i2c imuConn;
 
-volatile IMU imu;
 volatile int lock;
 volatile int first = 1;
 
@@ -16,7 +15,7 @@ void imu_run()
   {
     unsigned long last = CNT;
     imu_update();
-    printf("%4.2f\t%4.2f\n", imu.g.x.filter, imu.roll.input);
+    printf("%.2f\t%.2f\t%.2f\n", imu.a.roll, imu.g.x.filter, imu.roll.input);
     waitcnt(last + CLKFREQ/1000*IMU_UPDATE_DELAY);
   }
 }
@@ -71,7 +70,8 @@ void imu_update()
   }
   else
   {
-    imu.g.x.filter = imu.g.x.raw;
+    // y[n]=(1-alpha)y[n-1]+(1-alpha)(x[n]-x[n-1])
+    imu.g.x.filter = 0.98*imu.g.x.filter + 0.02*(imu.g.x.raw);
     imu.g.y.filter = imu.g.y.raw;
     imu.g.z.filter = imu.g.z.raw;
   }
@@ -82,8 +82,8 @@ void imu_update()
   imu.a.roll = atan2(-imu.a.y.filter, imu.a.z.filter)*180/PI;
   imu.a.pitch = atan2(imu.a.x.filter, sqrt(imu.a.y.filter*imu.a.y.filter + imu.a.z.filter*imu.a.z.filter))*180/PI;
 
-  imu.pitch.input = 0.98*(imu.pitch.input + imu.g.z.filter*IMU_UPDATE_DELAY) + 0.02*imu.a.pitch;
-  imu.roll.input = 0.5*(imu.roll.input + imu.g.x.filter*IMU_UPDATE_DELAY) + 0.02*imu.a.roll;
+  imu.pitch.input = 0.98*(imu.pitch.input + imu.g.z.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.pitch;
+  imu.roll.input = 0.98*(imu.roll.input + imu.g.x.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.roll;
 
   compute_pid(&imu.pitch, 0);
   compute_pid(&imu.roll, 0);

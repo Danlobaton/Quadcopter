@@ -2,10 +2,10 @@
 
 #define PIN_IMU_SDA    16
 #define PIN_IMU_SCL    15
-#define PIN_MOTOR_FR   9
-#define PIN_MOTOR_FL   10
-#define PIN_MOTOR_BR   8
-#define PIN_MOTOR_BL   11
+#define PIN_MOTOR_F   8
+#define PIN_MOTOR_B   9
+#define PIN_MOTOR_L   10
+#define PIN_MOTOR_R   11
 #define PIN_XBEE_IN    15 // DOUT
 #define PIN_XBEE_OUT   14 // DIN
 #define PIN_RANGE_TRIG 7
@@ -22,7 +22,7 @@
 #define ACCL_REG_Z 0x36
 
 #define IMU_UPDATE_DELAY 100 // Time between updates (in ms)
-#define ACCEL_FILTER_ALPHA 0.5d // Alpha value of low pass filter
+#define ACCEL_FILTER_ALPHA 0.5 // Alpha value of low pass filter
 
 #define XBEE_BAUD_RATE 9600
 
@@ -99,6 +99,8 @@ typedef struct
   double kp;
   double ki;
   double kd;
+  volatile Motor* inc;
+  volatile Motor* dec;
 } Axis;
 
 typedef struct
@@ -108,6 +110,8 @@ typedef struct
   Axis pitch;
   Axis roll;
 } IMU;
+
+volatile IMU imu;
 
 unsigned short read_from_register(i2c*, int, int);
 void write_to_register(i2c*, int, int, int);
