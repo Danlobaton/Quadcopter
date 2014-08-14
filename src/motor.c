@@ -38,11 +38,11 @@ void motor_init()
 void motor_run()
 {
   cog_run(&pwm_run, 100);
-  quad_time(1000, 5);
-  quad_time(1100, 2);
-  quad_time(1200, 3);
-  quad_time(1100, 2);
-  quad_time(1000, 1);
+  quad_time(1000, 15);
+  quad_time(1300, 2);
+  //quad_time(1200, 3);
+  //quad_time(1100, 2);
+  quad_power(1000);
 }
 
 void pwm_run()
