@@ -97,6 +97,7 @@ typedef struct
 } IMU;
 
 volatile IMU imu;
+volatile Motor* motors[4];
 
 unsigned short read_from_register(i2c*, int, int);
 void write_to_register(i2c*, int, int, int);

@@ -21,8 +21,6 @@ volatile Motor b = { .pin = PIN_MOTOR_B, .current_val = 0 };
 volatile Motor l = { .pin = PIN_MOTOR_L, .current_val = 0 };
 volatile Motor r = { .pin = PIN_MOTOR_R, .current_val = 0 };
 
-volatile Motor* motors[4];
-
 void motor_init()
 {
   motors[0] = &f;
