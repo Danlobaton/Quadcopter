@@ -38,11 +38,19 @@ void motor_init()
 void motor_run()
 {
   cog_run(&pwm_run, 100);
-  quad_time(1000, 15);
-  quad_time(1300, 2);
-  //quad_time(1200, 3);
-  //quad_time(1100, 2);
-  quad_power(1000);
+  int tmp = lastCommand;
+
+  switch(tmp) {
+    case COMMAND_WAKEUP:
+      quad_power(1000);
+      break;
+    case COMMAND_TAKEOFF:
+      quad_power(1400);
+      break;
+    case COMMAND_SHUTDOWN:
+      quad_power(1100);
+      break;
+  }
 }
 
 void pwm_run()

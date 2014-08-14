@@ -33,7 +33,7 @@
 
 #define COMMAND_WAKEUP   0x01
 #define COMMAND_TAKEOFF  0x02
-#define COMMAND_LAND     0x03
+#define COMMAND_SHUTDOWN 0x03
 
 volatile unsigned int lastCommand;
 volatile unsigned int range;
