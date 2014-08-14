@@ -38,21 +38,22 @@ void motor_init()
 void motor_run()
 {
   cog_run(&pwm_run, 100);
-  int tmp = lastCommand;
-
-  switch(tmp) {
-    case COMMAND_WAKEUP:
-      quad_power(1000);
-      break;
-    case COMMAND_TAKEOFF:
-      quad_power(1400);
-      break;
-    case COMMAND_SHUTDOWN:
-      quad_power(1100);
-      break;
-    case 0x04:
-      quad_power(1300);
-      break;
+  while(1) {
+    int tmp = lastCommand;
+    switch(tmp) {
+      case COMMAND_WAKEUP:
+        quad_power(1000);
+        break;
+      case COMMAND_TAKEOFF:
+        quad_power(1400);
+        break;
+      case COMMAND_SHUTDOWN:
+        quad_power(1100);
+        break;
+      case 0x04:
+        quad_power(1300);
+        break;
+    }
   }
 }
 
