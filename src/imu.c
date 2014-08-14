@@ -42,6 +42,9 @@ void imu_init()
   write_to_register(&imuConn, ACCL_ADDR, 0x2D, 16);
   write_to_register(&imuConn, ACCL_ADDR, 0x2D, 8);
   write_to_register(&imuConn, ACCL_ADDR, 0x31, 0); // Might need to change this later.
+
+  configure_pid(&imu.pitch, IMU_UPDATE_DELAY);
+  configure_pid(&imu.roll, IMU_UPDATE_DELAY);
 }
 
 void imu_update()
@@ -85,15 +88,21 @@ void imu_update()
   imu.pitch.input = 0.98*(imu.pitch.input + imu.g.z.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.pitch;
   imu.roll.input = 0.98*(imu.roll.input + imu.g.x.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.roll;
 
-  compute_pid(&imu.pitch, 0);
-  compute_pid(&imu.roll, 0);
+  compute_pid(&imu.pitch);
+  compute_pid(&imu.roll);
 
   lock = 0;
 }
 
-void compute_pid(volatile Axis* axis, int setpoint)
+void configure_pid(volatile Axis* axis, int sample)
 {
-  double error = setpoint - axis->input;
+  axis->ki *= sample/1000;
+  axis->kd /= sample/1000;
+}
+
+void compute_pid(volatile Axis* axis)
+{
+  double error = axis->setpoint - axis->input;
 
   axis->errSum += error;
   if (axis->errSum > MOTOR_HIGH) axis->errSum = MOTOR_HIGH;

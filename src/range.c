@@ -3,8 +3,13 @@
 
 void ultrasonic_run()
 {
+  configure_pid(&imu.height, 60);
+  int tmp;
+
   while(1)
   {
+    tmp = CNT;
+
     high(PIN_RANGE_TRIG);
     waitcnt(CNT + CLKFREQ/100000); // 10 uS
     low(PIN_RANGE_TRIG);
@@ -14,6 +19,9 @@ void ultrasonic_run()
     if (duration > 400)
       duration = 400;
     range = duration;
-    waitcnt(CNT + CLKFREQ/17);
+
+    compute_pid(&imu.height);
+
+    waitcnt(tmp + CLKFREQ/17);
   }
 }
