@@ -72,8 +72,8 @@ void imu_update()
   {
     // y[n]=(1-alpha)y[n-1]+(1-alpha)(x[n]-x[n-1])
     imu.g.x.filter = 0.98*imu.g.x.filter + 0.02*(imu.g.x.raw);
-    imu.g.y.filter = imu.g.y.raw;
-    imu.g.z.filter = imu.g.z.raw;
+    imu.g.y.filter = 0.98*imu.g.y.filter + 0.02*(imu.g.y.raw);
+    imu.g.z.filter = 0.98*imu.g.z.filter + 0.02*(imu.g.z.raw);
   }
   imu.a.x.filter = imu.a.x.raw*ACCEL_FILTER_ALPHA + imu.a.x.filter*(1-ACCEL_FILTER_ALPHA);
   imu.a.y.filter = imu.a.y.raw*ACCEL_FILTER_ALPHA + imu.a.y.filter*(1-ACCEL_FILTER_ALPHA);
