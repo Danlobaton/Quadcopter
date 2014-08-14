@@ -6,7 +6,7 @@
 #define PIN_MOTOR_B    9
 #define PIN_MOTOR_L    10
 #define PIN_MOTOR_R    11
-#define PIN_XBEE_IN    15 // DOUT
+#define PIN_XBEE_IN    12 // DOUT
 #define PIN_XBEE_OUT   14 // DIN
 #define PIN_RANGE_TRIG 7
 #define PIN_RANGE_ECHO 8
@@ -31,9 +31,9 @@
 #define MOTOR_HOVER 1300
 #define MOTOR_HIGH  2000
 
-#define COMMAND_WAKEUP   0x01
-#define COMMAND_TAKEOFF  0x02
-#define COMMAND_SHUTDOWN 0x03
+#define COMMAND_WAKEUP   0x61
+#define COMMAND_TAKEOFF  0x62
+#define COMMAND_SHUTDOWN 0x63
 
 volatile unsigned int lastCommand;
 volatile unsigned int range;
