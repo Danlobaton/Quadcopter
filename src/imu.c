@@ -95,7 +95,7 @@ void compute_pid(volatile Axis* axis, int setpoint)
 {
   double error = setpoint - axis->input;
 
-  axis->errSum += error*IMU_UPDATE_DELAY;
+  axis->errSum += error;
   if (axis->errSum > MOTOR_HIGH) axis->errSum = MOTOR_HIGH;
   else if (axis->errSum < MOTOR_LOW) axis->errSum = MOTOR_LOW;
 

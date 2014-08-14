@@ -94,6 +94,7 @@ typedef struct
   Accel a;
   Axis pitch;
   Axis roll;
+  Axis height;
 } IMU;
 
 volatile IMU imu;
