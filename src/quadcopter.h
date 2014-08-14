@@ -6,7 +6,7 @@
 #define PIN_MOTOR_B    9
 #define PIN_MOTOR_L    10
 #define PIN_MOTOR_R    11
-#define PIN_XBEE_IN    12 // DOUT
+#define PIN_XBEE_IN    13 // DOUT
 #define PIN_XBEE_OUT   14 // DIN
 #define PIN_RANGE_TRIG 7
 #define PIN_RANGE_ECHO 8
