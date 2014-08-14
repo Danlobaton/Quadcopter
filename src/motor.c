@@ -37,13 +37,8 @@ void motor_init()
 
 void motor_run()
 {
-  simpleterm_open();
-  waitcnt(CNT + CLKFREQ);
-  print("Starting.\n");
   cog_run(&pwm_run, 100);
-  print("Wakeup.\n");
   quad_time(1000, 5);
-  print("Power.\n");
   quad_time(1100, 2);
   quad_time(1200, 3);
   quad_time(1100, 2);

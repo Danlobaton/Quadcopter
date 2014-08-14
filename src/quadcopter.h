@@ -2,10 +2,10 @@
 
 #define PIN_IMU_SDA    16
 #define PIN_IMU_SCL    15
-#define PIN_MOTOR_F   8
-#define PIN_MOTOR_B   9
-#define PIN_MOTOR_L   10
-#define PIN_MOTOR_R   11
+#define PIN_MOTOR_F    8
+#define PIN_MOTOR_B    9
+#define PIN_MOTOR_L    10
+#define PIN_MOTOR_R    11
 #define PIN_XBEE_IN    15 // DOUT
 #define PIN_XBEE_OUT   14 // DIN
 #define PIN_RANGE_TRIG 7
@@ -31,24 +31,9 @@
 #define MOTOR_HOVER 1300
 #define MOTOR_HIGH  2000
 
-#define COMMAND_WAKEUP   0x10 // 1
-#define COMMAND_FORWARD  0x20 // P
-#define COMMAND_BACKWARD 0x30 // P
-#define COMMAND_HOVER    0x40 // 1
-#define COMMAND_DOWN     0x50 // P
-#define COMMAND_UP       0x60 // P
-#define COMMAND_CCW      0x70 // P
-#define COMMAND_CW       0x80 // P
-#define COMMAND_RIGHT    0x90 // P
-#define COMMAND_LEFT     0xA0 // P
-#define COMMAND_SHUTDOWN 0xB0 // 1
-#define COMMAND_REQUEST  0xC0 // 1
-#define COMMAND_TAKEOFF  0xD0 // A
-#define COMMAND_LAND     0xE0 // A
-
-#define PARAM_ONCE  0x00
-#define PARAM_POWER 0x01
-#define PARAM_AUTON 0x02
+#define COMMAND_WAKEUP   0x01
+#define COMMAND_TAKEOFF  0x02
+#define COMMAND_LAND     0x03
 
 volatile unsigned int lastCommand;
 volatile unsigned int range;
