@@ -50,6 +50,9 @@ void motor_run()
     case COMMAND_SHUTDOWN:
       quad_power(1100);
       break;
+    case 0x04:
+      quad_power(1300);
+      break;
   }
 }
 
