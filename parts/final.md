@@ -5,7 +5,7 @@ On Quadcopter
 
 | Part | Source | Price | Mass |
 | ------------- | ------------- | ------------- | ------------- |
-| Processor | [Parallax Propeller (Obselete Version)](http://www.parallax.com/microcontrollers/propeller) | $50 | 24g |
+| Processor | [Parallax Propeller Mini](http://www.parallax.com/product/32150) | $25 | 10g |
 | IMU (Accelerometer + Gyro) | [IMU Digital Combo Board - ITG3200/ADXL345](https://www.sparkfun.com/products/10121) | $40 |  |
 | Chasis | [ST360 (360mm)](http://www.hobbyking.com/hobbyking/store/__28592__st360_quadcopter_frame_w_motors_and_propellers_360mm.html) | $40 | 170g |
 | Motor | [2210N 1000Kv Brushless Motor](http://www.hobbyking.com/hobbyking/store/__8621__2210n_1000kv_brushless_motor.html) | | 45g x 4 |
@@ -16,7 +16,7 @@ On Quadcopter
 | Range Finder | [HS-SR04](http://www.amazon.com/SainSmart-HC-SR04-Ranging-Detector-Distance/dp/B004U8TOE6) | $12 | 8g |
 | Transmitter | [XBee 1mW Wire Antenna](https://www.sparkfun.com/products/8665) | $23 | 5g |
 | | [XBee Explorer Regulated](https://www.sparkfun.com/products/11373) | $10 | 5g |
-| Total | | $215 | 673g |
+| Total | | $190 | 659g |
 
 ---
 Not on Quadcopter
@@ -29,4 +29,4 @@ Not on Quadcopter
 
 ---
 
-Total: $283
+Total: $268
