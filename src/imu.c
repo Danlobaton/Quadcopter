@@ -81,16 +81,19 @@ void imu_update()
   imu.a.y.filter = imu.a.y.raw*ACCEL_FILTER_ALPHA + imu.a.y.filter*(1-ACCEL_FILTER_ALPHA);
   imu.a.z.filter = imu.a.z.raw*ACCEL_FILTER_ALPHA + imu.a.z.filter*(1-ACCEL_FILTER_ALPHA);
 
-  imu.a.roll = atan2(-imu.a.y.filter, imu.a.z.filter)*180/PI;
-  imu.a.pitch = atan2(imu.a.x.filter, sqrt(imu.a.y.filter*imu.a.y.filter + imu.a.z.filter*imu.a.z.filter))*180/PI;
+  imu.a.roll = atan2(imu.a.x.filter, sqrt(imu.a.y.filter*imu.a.y.filter + imu.a.z.filter*imu.a.z.filter))*180/PI;
+  imu.a.pitch = atan2(-imu.a.y.filter, imu.a.z.filter)*180/PI;
 
-  imu.pitch.input = 0.98*(imu.pitch.input + imu.g.z.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.pitch;
-  imu.roll.input = 0.98*(imu.roll.input + imu.g.x.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.roll;
+  imu.roll.input = 0.90*(imu.roll.input + imu.g.x.raw*IMU_UPDATE_DELAY) + 0.1*imu.a.roll;
+  imu.pitch.input = 0.90*(imu.pitch.input + imu.g.z.raw*IMU_UPDATE_DELAY) + 0.1*imu.a.pitch;
 
   compute_pid(&imu.pitch, MOTOR_LOW, MOTOR_HIGH);
   compute_pid(&imu.roll, MOTOR_LOW, MOTOR_HIGH);
 
-  printf("%.2f\t%.2f\t%.2f\n", imu.a.roll, imu.g.x.filter, imu.roll.input);
+  //printf("%.2f\t%.2f\t%.2f\n", imu.a.pitch, imu.a.z.filter, imu.a.z.raw);
+  xbee_send_val(imu.pitch.input);
+  xbee_send_val(imu.roll.input);
+  xbee_send_byte('\n');
 
   lock = 0;
 }

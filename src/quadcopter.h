@@ -114,6 +114,7 @@ void configure_pid(volatile Axis*, int);
 void xbee_init();
 void xbee_run();
 unsigned int xbee_get_byte();
+void xbee_send_val(double);
 void xbee_send_byte(unsigned int);
 
 void motor_init();

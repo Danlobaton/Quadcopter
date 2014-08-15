@@ -38,6 +38,21 @@ unsigned int xbee_get_byte()
   return currentByte;
 }
 
+void xbee_send_val(double n)
+{
+  if (n<0)
+  {
+    xbee_send_byte('-');
+    n = 0 - n;
+  }
+  xbee_send_byte(48+(int)(n/10)%10);
+  xbee_send_byte(48+(int)(n)%10);
+  xbee_send_byte('.');
+  xbee_send_byte(48+(int)(n*10)%10);
+  xbee_send_byte(48+(int)(n*100)%10);
+  xbee_send_byte(' ');
+}
+
 void xbee_send_byte(unsigned int byte)
 {
   waitcnt(CNT + CLKFREQ/XBEE_BAUD_RATE);
