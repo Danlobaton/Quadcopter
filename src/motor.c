@@ -43,10 +43,16 @@ void motor_run()
         quad_power(1000);
         break;
       case COMMAND_TAKEOFF:
-        quad_power(1400);
+        quad_power(1200);
         break;
       case COMMAND_SHUTDOWN:
         quad_power(1100);
+        break;
+      case 0x64:
+        quad_power(1300);
+        break;
+      case 0x65:
+        quad_power(1400);
         break;
     }
   }
