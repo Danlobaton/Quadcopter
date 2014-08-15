@@ -88,8 +88,8 @@ void imu_update()
   imu.pitch.input = 0.98*(imu.pitch.input + imu.g.z.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.pitch;
   imu.roll.input = 0.98*(imu.roll.input + imu.g.x.raw*IMU_UPDATE_DELAY) + 0.02*imu.a.roll;
 
-  compute_pid(&imu.pitch);
-  compute_pid(&imu.roll);
+  compute_pid(&imu.pitch, MOTOR_LOW, MOTOR_HIGH);
+  compute_pid(&imu.roll, MOTOR_LOW, MOTOR_HIGH);
 
   lock = 0;
 }
@@ -100,19 +100,19 @@ void configure_pid(volatile Axis* axis, int sample)
   axis->kd /= sample/1000;
 }
 
-void compute_pid(volatile Axis* axis)
+void compute_pid(volatile Axis* axis, int low, int high)
 {
   double error = axis->setpoint - axis->input;
 
   axis->errSum += error;
-  if (axis->errSum > MOTOR_HIGH) axis->errSum = MOTOR_HIGH;
-  else if (axis->errSum < MOTOR_LOW) axis->errSum = MOTOR_LOW;
+  if (axis->errSum > high) axis->errSum = high;
+  else if (axis->errSum < low) axis->errSum = low;
 
   double dIn = axis->input - axis->lastInput;
 
   axis->output = axis->kp*error + axis->ki*axis->errSum - axis->kd*dIn;
-  if (axis->output > MOTOR_HIGH) axis->output = MOTOR_HIGH;
-  else if (axis->output < MOTOR_LOW) axis->output = MOTOR_LOW;
+  if (axis->output > high) axis->output = high;
+  else if (axis->output < low) axis->output = low;
   
   axis->lastInput = axis->input;
   axis->lastErr = error;

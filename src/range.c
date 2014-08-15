@@ -20,7 +20,7 @@ void ultrasonic_run()
       duration = 400;
     range = duration;
 
-    compute_pid(&imu.height);
+    compute_pid(&imu.height, 0, 400);
 
     waitcnt(tmp + CLKFREQ/17);
   }

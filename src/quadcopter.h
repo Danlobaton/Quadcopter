@@ -108,7 +108,7 @@ unsigned short combine(char, char);
 void imu_init();
 void imu_update();
 void imu_run();
-void compute_pid(volatile Axis*);
+void compute_pid(volatile Axis*, int, int);
 void configure_pid(volatile Axis*, int);
 
 void xbee_init();
