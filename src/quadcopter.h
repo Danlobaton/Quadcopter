@@ -1,7 +1,7 @@
 #include "simpletools.h"
 
-#define PIN_IMU_SDA    16
-#define PIN_IMU_SCL    15
+#define PIN_IMU_SDA    17
+#define PIN_IMU_SCL    16
 #define PIN_MOTOR_F    8
 #define PIN_MOTOR_B    9
 #define PIN_MOTOR_L    10

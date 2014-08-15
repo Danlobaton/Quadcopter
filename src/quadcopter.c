@@ -3,6 +3,7 @@
 
 int main()
 {
+  simpleterm_close();
   motor_init();
   xbee_init();
   imu_init();
